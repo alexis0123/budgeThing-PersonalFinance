@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
@@ -23,21 +22,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.compose.ui.zIndex
 import com.budgething.ui.screen.mainscreen.pages.ExpensePage
 import com.budgething.ui.screen.mainscreen.pages.IncomePage
 import com.budgething.ui.screen.mainscreen.pages.ItemPage
+import com.budgething.ui.theme.BudgeThingTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+
+val tabPadding = 80.dp
 
 @Composable
 fun MainScreen() {
     Column {
-        SpacerBar()
         PagerNav()
     }
 }
@@ -49,15 +53,16 @@ fun PagerNav() {
     val pagerState = rememberPagerState(initialPage = 1, pageCount = { tabs.size })
 
     Box(modifier = Modifier.fillMaxSize()) {
+        Title()
         FloatingPageTitle(tabs = tabs, pagerState = pagerState)
 
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 48.dp),
+                .padding(top = 115.dp),
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 5.dp,
+            tonalElevation = 0.5.dp,
             shadowElevation = 10.dp
         ) {
             HorizontalPager(
@@ -85,7 +90,8 @@ fun FloatingPageTitle(tabs: List<String>, pagerState: PagerState) {
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
+            .padding(top = tabPadding),
         horizontalArrangement = Arrangement.Center
     ) {
         tabs.forEachIndexed { index, title ->
@@ -131,6 +137,29 @@ fun FloatingPageTitle(tabs: List<String>, pagerState: PagerState) {
 }
 
 @Composable
-fun SpacerBar() {
-    Box(modifier = Modifier.fillMaxWidth().height(50.dp).background(MaterialTheme.colorScheme.background))
+fun Title() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = tabPadding - 50.dp)
+            .padding(horizontal = 25.dp)
+            .zIndex(1f),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            text = "BudgeThing",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPreview() {
+    BudgeThingTheme(
+        darkTheme = true
+    ) {
+        MainScreen()
+    }
 }
