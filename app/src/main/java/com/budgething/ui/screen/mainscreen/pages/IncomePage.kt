@@ -1,4 +1,4 @@
-package com.budgething.ui.screen
+package com.budgething.ui.screen.mainscreen.pages
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
