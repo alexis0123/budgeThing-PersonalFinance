@@ -1,4 +1,4 @@
-package com.budgething.data.local.entities
+package com.budgething.data.local.expense
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
