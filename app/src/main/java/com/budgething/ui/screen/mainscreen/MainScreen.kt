@@ -141,7 +141,7 @@ fun Title() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = tabPadding - 50.dp)
+            .padding(top = 30.dp)
             .padding(horizontal = 25.dp)
             .zIndex(1f),
         contentAlignment = Alignment.CenterStart
@@ -158,7 +158,8 @@ fun Title() {
 @Composable
 fun MainPreview() {
     BudgeThingTheme(
-        darkTheme = true
+        darkTheme = true,
+        dynamicColor = false
     ) {
         MainScreen()
     }
