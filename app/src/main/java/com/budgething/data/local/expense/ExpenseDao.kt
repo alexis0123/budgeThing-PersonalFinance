@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 @Dao
@@ -20,6 +21,9 @@ interface ExpenseDao {
     suspend fun getAllExpenses(): List<Expense>
 
     @Query("SELECT * FROM expense WHERE date BETWEEN :start AND :end ORDER BY date ASC")
-    suspend fun getExpenseBetween(start: LocalDate, end: LocalDate): List<Expense>
+    fun getExpensesBetween(start: LocalDate, end: LocalDate): Flow<List<Expense>>
+
+    @Query("SELECT * FROM expense ORDER BY date DESC LIMIT 20")
+    fun getLastExpenses(limit: Int): Flow<List<Expense>>
 
 }
