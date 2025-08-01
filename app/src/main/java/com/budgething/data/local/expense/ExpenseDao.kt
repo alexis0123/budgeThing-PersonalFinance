@@ -20,6 +20,6 @@ interface ExpenseDao {
     suspend fun getAllExpenses(): List<Expense>
 
     @Query("SELECT * FROM expense WHERE date BETWEEN :start AND :end ORDER BY date ASC")
-    suspend fun getExpenseBetween(start: LocalDate, end: LocalDate)
+    suspend fun getExpenseBetween(start: LocalDate, end: LocalDate): List<Expense>
 
 }
