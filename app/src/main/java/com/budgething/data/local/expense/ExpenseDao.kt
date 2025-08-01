@@ -24,6 +24,6 @@ interface ExpenseDao {
     fun getExpensesBetween(start: LocalDate, end: LocalDate): Flow<List<Expense>>
 
     @Query("SELECT * FROM expense ORDER BY date DESC LIMIT 20")
-    fun getLastExpenses(limit: Int): Flow<List<Expense>>
+    fun getLastExpenses(): Flow<List<Expense>>
 
 }
