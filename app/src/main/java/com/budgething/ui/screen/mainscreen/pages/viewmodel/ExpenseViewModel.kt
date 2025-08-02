@@ -7,6 +7,7 @@ import com.budgething.data.local.expense.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 
@@ -29,5 +30,17 @@ class ExpenseViewModel(
             SharingStarted.WhileSubscribed(),
             emptyList()
         )
+
+    fun addExpense(expense: Expense) {
+        viewModelScope.launch {
+            repo.add(expense)
+        }
+    }
+
+    fun updateExpense(expense: Expense) {
+        viewModelScope.launch {
+            repo.update(expense)
+        }
+    }
 
 }
