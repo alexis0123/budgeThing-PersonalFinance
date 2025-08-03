@@ -16,6 +16,8 @@ class ItemRepository(private val dao: ItemDao) {
         dao.deleteItem(item)
     }
 
+    fun getItems(): Flow<List<Item>> = dao.getItems()
+
     fun searchFor(q: String): Flow<List<Item>> = dao.getItemsFor(q)
 
 }

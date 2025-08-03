@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.budgething.data.local.AppDatabaseCallback
 import com.budgething.data.helper.LocalDateConverter
 import com.budgething.data.helper.SubList
 import com.budgething.data.local.expense.Expense
