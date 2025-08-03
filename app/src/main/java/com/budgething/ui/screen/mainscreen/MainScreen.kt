@@ -30,9 +30,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
-import com.budgething.ui.screen.mainscreen.pages.ExpensePage
+import com.budgething.ui.screen.mainscreen.pages.expense.ExpensePage
 import com.budgething.ui.screen.mainscreen.pages.IncomePage
 import com.budgething.ui.screen.mainscreen.pages.ItemPage
+import com.budgething.ui.screen.mainscreen.pages.expense.NumKeyViewModel
+import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
+import com.budgething.ui.screen.mainscreen.pages.viewmodel.ExpenseViewModel
 import com.budgething.ui.theme.BudgeThingTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -40,15 +43,27 @@ import kotlin.math.abs
 val tabPadding = 80.dp
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    numKeyViewModel: NumKeyViewModel,
+    confirmExpenseViewModel: ConfirmExpenseViewModel,
+    expenseViewModel: ExpenseViewModel
+) {
     Column {
-        PagerNav()
+        PagerNav(
+            numKeyViewModel,
+            confirmExpenseViewModel,
+            expenseViewModel
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerNav() {
+fun PagerNav(
+    numKeyViewModel: NumKeyViewModel,
+    confirmExpenseViewModel: ConfirmExpenseViewModel,
+    expenseViewModel: ExpenseViewModel
+) {
     val tabs = listOf("Expense", "Items", "Income")
     val pagerState = rememberPagerState(initialPage = 1, pageCount = { tabs.size })
 
@@ -71,7 +86,11 @@ fun PagerNav() {
                 modifier = Modifier.fillMaxSize()
             ) { page ->
                 when (page) {
-                    0 -> ExpensePage()
+                    0 -> ExpensePage(
+                        numKeyViewModel,
+                        confirmExpenseViewModel,
+                        expenseViewModel
+                    )
                     1 -> ItemPage()
                     2 -> IncomePage()
                 }
@@ -151,16 +170,5 @@ fun Title() {
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MainPreview() {
-    BudgeThingTheme(
-        darkTheme = true,
-        dynamicColor = false
-    ) {
-        MainScreen()
     }
 }
