@@ -61,4 +61,6 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     implementation(libs.compose.foundation.pager)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
 }
