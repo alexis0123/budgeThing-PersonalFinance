@@ -24,16 +24,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.budgething.ui.screen.mainscreen.pages.expense.top.FormattedAmountDisplay
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseDialog
+import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
 
 @Composable
-fun ExpensePage() {
-
-    val numKeyViewModel: NumKeyViewModel = viewModel()
-    val expenseViewModel: ExpenseViewModel
+fun ExpensePage(
+    numKeyViewModel: NumKeyViewModel,
+    confirmExpenseViewModel: ConfirmExpenseViewModel,
+    expenseViewModel: ExpenseViewModel
+) {
 
     val amount by numKeyViewModel.amount.collectAsState()
     var confirmedAmount by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+
+    ConfirmExpenseDialog(
+        showDialog = showDialog,
+        amount = confirmedAmount,
+        dismiss = {
+            showDialog = false
+            confirmExpenseViewModel.clearAllState()
+        },
+        confirm = {
+            showDialog = false
+        },
+        viewModel = confirmExpenseViewModel,
+        expenseViewModel = expenseViewModel
+    )
 
     Column(
         modifier = Modifier
@@ -65,35 +82,6 @@ fun ExpensePage() {
                 },
                 numKeyViewModel
             )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ExpensePagePreview() {
-    BudgeThingTheme(
-        darkTheme = true,
-        dynamicColor = false
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {}
-        Box(modifier = Modifier.fillMaxSize()) {
-
-            Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 115.dp),
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-                color = MaterialTheme.colorScheme.surface,
-                tonalElevation = 0.5.dp,
-                shadowElevation = 10.dp
-            ) {
-                ExpensePage()
-            }
         }
     }
 }
