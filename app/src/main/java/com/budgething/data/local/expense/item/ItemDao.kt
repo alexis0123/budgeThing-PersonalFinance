@@ -23,4 +23,7 @@ interface ItemDao {
     @Query("SELECT * FROM item WHERE name LIKE '%' || :q || '%'")
     fun getItemsFor(q: String): Flow<List<Item>>
 
+    @Query("SELECT * FROM item")
+    fun getItems(): Flow<List<Item>>
+
 }
