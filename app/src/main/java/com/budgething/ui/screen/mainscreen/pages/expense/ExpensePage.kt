@@ -1,15 +1,20 @@
 package com.budgething.ui.screen.mainscreen.pages.expense
 
+import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -26,6 +31,7 @@ import com.budgething.ui.screen.mainscreen.pages.expense.top.FormattedAmountDisp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseDialog
 import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
+import com.budgething.ui.screen.mainscreen.pages.expense.top.TopScreen
 
 @Composable
 fun ExpensePage(
@@ -36,17 +42,18 @@ fun ExpensePage(
 
     val amount by numKeyViewModel.amount.collectAsState()
     var confirmedAmount by remember { mutableStateOf("") }
-    var showDialog by remember { mutableStateOf(false) }
+    var showConfirm by remember { mutableStateOf(false) }
+    var showRecent by remember { mutableStateOf(false) }
 
     ConfirmExpenseDialog(
-        showDialog = showDialog,
+        showDialog = showConfirm,
         amount = confirmedAmount,
         dismiss = {
-            showDialog = false
+            showConfirm = false
             confirmExpenseViewModel.clearAllState()
         },
         confirm = {
-            showDialog = false
+            showConfirm = false
         },
         viewModel = confirmExpenseViewModel,
         expenseViewModel = expenseViewModel
@@ -56,7 +63,8 @@ fun ExpensePage(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 30.dp)
-            .padding(vertical = 60.dp),
+            .padding(bottom = 60.dp)
+            .padding(top = 30.dp),
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.Center
     ) {
@@ -66,7 +74,10 @@ fun ExpensePage(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.End
         ) {
-            FormattedAmountDisplay(amount, 50, MaterialTheme.colorScheme.onBackground)
+            TopScreen(
+                { showRecent = true },
+                amount
+            )
         }
 
         Column(
@@ -78,7 +89,7 @@ fun ExpensePage(
             KeyPad(
                 {
                     confirmedAmount = amount
-                    showDialog = true
+                    showConfirm = true
                 },
                 numKeyViewModel
             )
