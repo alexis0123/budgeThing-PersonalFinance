@@ -32,7 +32,9 @@ fun Dropdown(
     selectedItem: String,
     label: String,
     onSelect: (String) -> Unit,
-    onRemove: () -> Unit
+    onRemove: () -> Unit,
+    width: Int = 200,
+    height: Int = 50
 ) {
     var showOptions by remember { mutableStateOf(false) }
 
@@ -45,8 +47,8 @@ fun Dropdown(
                     color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(20.dp)
                 )
-                .width(170.dp)
-                .height(50.dp)
+                .width(width.dp)
+                .height(height.dp)
         ) {
             Text(selectedItem.ifEmpty { label }, color = MaterialTheme.colorScheme.onSurface)
 
@@ -69,7 +71,7 @@ fun Dropdown(
             expanded = showOptions,
             onDismissRequest = { showOptions = false },
             modifier = Modifier
-                .width(170.dp)
+                .width(width.dp)
                 .heightIn(max = 200.dp)
         ) {
             itemsList.forEach { item ->
