@@ -31,6 +31,7 @@ import com.budgething.ui.screen.mainscreen.pages.expense.top.FormattedAmountDisp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseDialog
 import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
+import com.budgething.ui.screen.mainscreen.pages.expense.dialog.recent.RecentDialog
 import com.budgething.ui.screen.mainscreen.pages.expense.top.TopScreen
 
 @Composable
@@ -57,6 +58,12 @@ fun ExpensePage(
         },
         viewModel = confirmExpenseViewModel,
         expenseViewModel = expenseViewModel
+    )
+
+    RecentDialog(
+        showDialog = showRecent,
+        dismiss = { showRecent = false },
+        viewModel = expenseViewModel
     )
 
     Column(

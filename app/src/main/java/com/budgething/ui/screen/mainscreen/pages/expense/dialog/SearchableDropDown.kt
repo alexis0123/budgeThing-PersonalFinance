@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -23,9 +24,11 @@ fun SearchableDropDown(
     query: String,
     filteredOptions: List<Item>,
     onQueryChange: (String) -> Unit,
-    onItemSelected: (Item) -> Unit
+    onItemSelected: (Item) -> Unit,
+    showFilter: Boolean,
+    setShowFilter: (Boolean) -> Unit,
+    width: Int = 200
 ) {
-    var showFilter by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     Box(contentAlignment = Alignment.TopCenter) {
@@ -33,17 +36,17 @@ fun SearchableDropDown(
             value = query,
             onValueChange = {
                 onQueryChange(it)
-                showFilter = it.isNotEmpty()
+                setShowFilter(it.isNotEmpty())
             },
             singleLine = true,
             placeholder = { Text("Expense name", color = MaterialTheme.colorScheme.onSecondary) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.width(width.dp)
         )
 
         if (showFilter) {
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .width(width.dp)
                     .heightIn(max = 200.dp)
                     .padding(top = 55.dp)
             ) {
@@ -58,7 +61,7 @@ fun SearchableDropDown(
                                 .fillMaxWidth()
                                 .clickable {
                                     onItemSelected(item)
-                                    showFilter = false
+                                    setShowFilter(false)
                                     focusManager.clearFocus()
                                 }
                                 .padding(12.dp)
