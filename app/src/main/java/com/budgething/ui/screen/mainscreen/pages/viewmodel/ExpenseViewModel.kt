@@ -6,6 +6,7 @@ import com.budgething.data.local.expense.Expense
 import com.budgething.data.local.expense.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -18,7 +19,7 @@ class ExpenseViewModel(
     private val startOfWeek = LocalDate.now().with(DayOfWeek.MONDAY)
     private val endOfWeek = LocalDate.now().with(DayOfWeek.SUNDAY)
 
-    val recentExpenses: Flow<List<Expense>> = repo.getRecent().stateIn(
+    val recentExpenses: StateFlow<List<Expense>> = repo.getRecent().stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
         emptyList()
@@ -40,6 +41,12 @@ class ExpenseViewModel(
     fun updateExpense(expense: Expense) {
         viewModelScope.launch {
             repo.update(expense)
+        }
+    }
+
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch {
+            repo.deleteExpense(expense)
         }
     }
 

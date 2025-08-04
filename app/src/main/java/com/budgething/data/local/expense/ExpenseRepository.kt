@@ -19,4 +19,6 @@ class ExpenseRepository(private val dao: ExpenseDao) {
 
     fun getRecent(): Flow<List<Expense>> = dao.getLastExpenses()
 
+    suspend fun deleteExpense(expense: Expense) = dao.deleteExpense(expense)
+
 }
