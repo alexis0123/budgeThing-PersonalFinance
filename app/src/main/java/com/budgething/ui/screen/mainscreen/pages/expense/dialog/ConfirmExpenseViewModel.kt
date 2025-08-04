@@ -31,7 +31,6 @@ class ConfirmExpenseViewModel(
     val mainCategory: StateFlow<String> get() = _mainCategory
     val subCategory: StateFlow<String> get() = _subCategory
     val query: StateFlow<String> get() = _query
-    val done: StateFlow<Boolean> get() = _done
 
     val mainCategories: StateFlow<List<String>> = flow {
         emit(categoryRepo.getMainCategories())
@@ -105,4 +104,11 @@ class ConfirmExpenseViewModel(
     fun setUnDone() {
         _done.value = false
     }
+
+    fun addNewItem(item: Item) {
+        viewModelScope.launch {
+            itemRepo.add(item)
+        }
+    }
+
 }
