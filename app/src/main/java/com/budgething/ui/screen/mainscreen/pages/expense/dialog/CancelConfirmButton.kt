@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.budgething.data.local.expense.Expense
+import com.budgething.data.local.expense.item.Item
+import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
 import com.budgething.ui.screen.mainscreen.pages.viewmodel.ExpenseViewModel
 import java.time.LocalDate
 
@@ -22,7 +24,9 @@ fun CancelRecordButton(
     subCategory: String,
     name: String,
     amount: Double,
-    viewModel: ExpenseViewModel
+    filteredOption: List<Item>,
+    viewModel: ExpenseViewModel,
+    confirmExpenseViewModel: ConfirmExpenseViewModel
 ) {
 
     val today = LocalDate.now()
@@ -55,6 +59,13 @@ fun CancelRecordButton(
                     name = name,
                     amount = amount
                 ))
+                if (name !in filteredOption.map { it.name }) {
+                    confirmExpenseViewModel.addNewItem(Item(
+                        name = name,
+                        mainCategory = mainCategory,
+                        subCategory = subCategory
+                    ))
+                }
                 dismiss()
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
