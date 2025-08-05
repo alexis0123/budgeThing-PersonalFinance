@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
@@ -36,11 +35,10 @@ import com.budgething.ui.screen.mainscreen.pages.ItemPage
 import com.budgething.ui.screen.mainscreen.pages.expense.NumKeyViewModel
 import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
 import com.budgething.ui.screen.mainscreen.pages.viewmodel.ExpenseViewModel
-import com.budgething.ui.theme.BudgeThingTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-val tabPadding = 80.dp
+val tabPadding = 110.dp
 
 @Composable
 fun MainScreen(
@@ -74,7 +72,7 @@ fun PagerNav(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 115.dp),
+                .padding(top = 150.dp),
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             color = MaterialTheme.colorScheme.surface,
             tonalElevation = 0.5.dp,
@@ -160,7 +158,7 @@ fun Title() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 30.dp)
+            .padding(top = 50.dp)
             .padding(horizontal = 25.dp)
             .zIndex(1f),
         contentAlignment = Alignment.CenterStart
