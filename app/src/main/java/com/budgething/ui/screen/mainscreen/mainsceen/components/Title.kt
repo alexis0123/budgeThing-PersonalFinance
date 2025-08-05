@@ -23,9 +23,6 @@ import androidx.compose.ui.zIndex
 
 @Composable
 fun Title() {
-
-    var expanded by remember { mutableStateOf(false) }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,14 +41,7 @@ fun Title() {
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
-
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = "Options",
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .clickable(onClick = { expanded = true })
-            )
+            OptionsMenu()
         }
     }
 }
