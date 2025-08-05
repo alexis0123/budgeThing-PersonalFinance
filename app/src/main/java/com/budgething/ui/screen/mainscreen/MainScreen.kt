@@ -16,12 +16,18 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -155,6 +161,9 @@ fun FloatingPageTitle(tabs: List<String>, pagerState: PagerState) {
 
 @Composable
 fun Title() {
+
+    var expanded by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -163,10 +172,24 @@ fun Title() {
             .zIndex(1f),
         contentAlignment = Alignment.CenterStart
     ) {
-        Text(
-            text = "BudgeThing",
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "BudgeThing",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = "Options",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .clickable(onClick = { expanded = true })
+            )
+        }
     }
 }
