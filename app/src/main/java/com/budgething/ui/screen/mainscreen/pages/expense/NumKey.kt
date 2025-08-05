@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 fun Key(label: String, onClick: () -> Unit) {
 
     val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(3.dp)
-    val size = 75.dp
+    val size = 70.dp
 
     Button(
         onClick = onClick,
@@ -30,7 +30,7 @@ fun Key(label: String, onClick: () -> Unit) {
         )
     ) {
         Text(
-            label, fontSize = 20.sp,
+            label, fontSize = 17.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
     }
