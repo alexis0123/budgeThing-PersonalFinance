@@ -57,7 +57,7 @@ fun EditExpenseDialog(
                         .padding(top = 35.dp)
                         .padding(bottom = 25.dp)
                         .padding(horizontal = 30.dp),
-                    verticalArrangement = Arrangement.spacedBy(1.dp),
+                    verticalArrangement = Arrangement.SpaceBetween,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
@@ -78,12 +78,13 @@ fun EditExpenseDialog(
                     }
 
                     Text(
-                        text = String.format(Locale.US, "\u20B1%,.2f", expense.amount),
+                        text = "${expense.name} : ${String.format(Locale.US, "₱ %, .2f", expense.amount)}",
                         style = MaterialTheme.typography.bodyLarge,
                         fontSize = 20.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    Row {
+                    Row(
+                    ) {
                         Button(
                             onClick = dismiss
                         ) { Text("Cancel") }
