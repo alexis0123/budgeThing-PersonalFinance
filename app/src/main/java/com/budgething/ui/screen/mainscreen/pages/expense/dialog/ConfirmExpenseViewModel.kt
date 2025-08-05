@@ -26,7 +26,6 @@ class ConfirmExpenseViewModel(
     private val _mainCategory = MutableStateFlow("")
     private val _subCategory = MutableStateFlow("")
     private val _query = MutableStateFlow("")
-    private val _done = MutableStateFlow(false)
 
     val mainCategory: StateFlow<String> get() = _mainCategory
     val subCategory: StateFlow<String> get() = _subCategory
@@ -43,11 +42,9 @@ class ConfirmExpenseViewModel(
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // Expose all items
     val allItems: StateFlow<List<Item>> = itemRepo.getItems()
-        .stateIn(viewModelScope, SharingStarted.Companion.WhileSubscribed(5_000), emptyList())
+        .stateIn(viewModelScope, SharingStarted.Companion.WhileSubscribed(5000), emptyList())
 
-    // Reactive filtered options based on query
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val filteredOptions: StateFlow<List<Item>> = _query
         .debounce(300)
@@ -95,14 +92,6 @@ class ConfirmExpenseViewModel(
         clearQuery()
         clearMainCategory()
         clearSubCategory()
-    }
-
-    fun setDone() {
-        _done.value = true
-    }
-
-    fun setUnDone() {
-        _done.value = false
     }
 
     fun addNewItem(item: Item) {

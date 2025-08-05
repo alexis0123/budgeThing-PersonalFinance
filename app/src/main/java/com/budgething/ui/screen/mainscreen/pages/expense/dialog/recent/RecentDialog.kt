@@ -25,8 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
+import com.budgething.data.local.expense.Expense
 
 @Composable
 fun RecentDialog(
@@ -37,7 +40,18 @@ fun RecentDialog(
 
     val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(200.dp)
 
+    var showEditDialog by remember { mutableStateOf(false) }
     val recentExpenses by viewModel.recentExpenses.collectAsState()
+    var selectedExpense: Expense? by remember { mutableStateOf(null) }
+
+    if (showEditDialog && selectedExpense != null) {
+        EditExpenseDialog(
+            showDialog = showEditDialog,
+            dismiss = { showEditDialog = false },
+            expense = selectedExpense!!,
+            expenseViewModel = viewModel
+        )
+    }
 
     if (showDialog) {
         Dialog(onDismissRequest = dismiss) {
@@ -57,7 +71,11 @@ fun RecentDialog(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .height(60.dp)
-                                .clickable(onClick = {})
+                                .clickable(onClick = {
+                                    selectedExpense = expense
+                                    showEditDialog = true
+                                }
+                                )
                         ) {
                             Column {
                                 Row(

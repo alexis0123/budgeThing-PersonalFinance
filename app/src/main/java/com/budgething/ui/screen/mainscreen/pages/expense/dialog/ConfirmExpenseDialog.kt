@@ -142,7 +142,6 @@ fun ConfirmExpenseDialog(
                                 viewModel.changeQuery(it.name)
                                 viewModel.setMainCategoryTo(it.mainCategory)
                                 viewModel.setSubCategoryTo(it.subCategory)
-                                viewModel.setDone()
                             },
                             showFilter = showFilter,
                             setShowFilter = { showFilter = it }
