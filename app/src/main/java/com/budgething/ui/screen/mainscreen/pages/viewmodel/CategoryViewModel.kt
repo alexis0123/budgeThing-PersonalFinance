@@ -24,4 +24,10 @@ class CategoryViewModel(
         }
     }
 
+    fun editCategory(category: Category) {
+        viewModelScope.launch {
+            repo.editCategory(category)
+        }
+    }
+
 }

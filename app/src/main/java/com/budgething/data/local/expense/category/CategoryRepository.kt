@@ -16,4 +16,8 @@ class CategoryRepository(private val dao: CategoryDao) {
     suspend fun getMainCategories(): List<String> {
         return dao.getCategory().map { it.main }
     }
+
+    suspend fun editCategory(category: Category) {
+        dao.editCategory(category)
+    }
 }
