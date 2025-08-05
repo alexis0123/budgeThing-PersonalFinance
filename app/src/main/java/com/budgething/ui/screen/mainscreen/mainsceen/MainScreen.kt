@@ -1,4 +1,4 @@
-package com.budgething.ui.screen.mainscreen
+package com.budgething.ui.screen.mainscreen.mainsceen
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -35,6 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.compose.ui.zIndex
+import com.budgething.ui.screen.mainscreen.mainsceen.components.FloatingPageTitle
+import com.budgething.ui.screen.mainscreen.mainsceen.components.Title
 import com.budgething.ui.screen.mainscreen.pages.expense.ExpensePage
 import com.budgething.ui.screen.mainscreen.pages.IncomePage
 import com.budgething.ui.screen.mainscreen.pages.ItemPage
@@ -99,97 +101,6 @@ fun PagerNav(
                     2 -> IncomePage()
                 }
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun FloatingPageTitle(tabs: List<String>, pagerState: PagerState) {
-    val coroutineScope = rememberCoroutineScope()
-    val currentPage = pagerState.currentPage
-    val offset = pagerState.currentPageOffsetFraction
-
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(top = tabPadding),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        tabs.forEachIndexed { index, title ->
-            val focus = 1f - abs(currentPage + offset - index).coerceIn(0f, 1f)
-
-            val animatedScale by animateFloatAsState(
-                targetValue = lerp(0.85f, 1.2f, focus),
-                label = "scaleAnim"
-            )
-            val animatedAlpha by animateFloatAsState(
-                targetValue = lerp(0.4f, 1f, focus),
-                label = "alphaAnim"
-            )
-            val animatedWeight = FontWeight(
-                lerp(
-                    FontWeight.Normal.weight.toFloat(),
-                    FontWeight.Bold.weight.toFloat(),
-                    focus
-                ).toInt()
-            )
-
-            Text(
-                text = title,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .graphicsLayer {
-                        scaleX = animatedScale
-                        scaleY = animatedScale
-                        alpha = animatedAlpha
-                    }
-                    .clickable {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                    },
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = animatedWeight,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            )
-        }
-    }
-}
-
-@Composable
-fun Title() {
-
-    var expanded by remember { mutableStateOf(false) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 50.dp)
-            .padding(horizontal = 25.dp)
-            .zIndex(1f),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "BudgeThing",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = "Options",
-                tint = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .clickable(onClick = { expanded = true })
-            )
         }
     }
 }
