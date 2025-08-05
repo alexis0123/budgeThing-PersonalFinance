@@ -1,5 +1,6 @@
 package com.budgething.ui.screen.mainscreen.pages.expense.dialog.recent
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,7 +31,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import com.budgething.data.local.expense.Expense
+import java.time.LocalDate
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun RecentDialog(
     showDialog: Boolean,
@@ -39,6 +42,7 @@ fun RecentDialog(
 ) {
 
     val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(200.dp)
+    val today = LocalDate.now()
 
     var showEditDialog by remember { mutableStateOf(false) }
     val recentExpenses by viewModel.recentExpenses.collectAsState()
@@ -59,14 +63,14 @@ fun RecentDialog(
                 modifier = Modifier
                     .width(350.dp)
                     .height(400.dp)
-                    .padding(30.dp)
+                    .padding(10.dp)
                     .background(color = elevatedColor, shape = RoundedCornerShape(30.dp))
             ) {
                 LazyColumn(
                     modifier = Modifier
                         .padding(20.dp)
                 ) {
-                    items(recentExpenses) { expense ->
+                    items(recentExpenses.reversed()) { expense ->
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
@@ -83,13 +87,30 @@ fun RecentDialog(
                                     modifier = Modifier.fillMaxSize()
                                 ) {
                                     Text(
-                                        text = "₱ ${expense.amount}",
-                                        modifier = Modifier.weight(0.5f).fillMaxHeight(),
-                                        textAlign = TextAlign.Center
+                                        text = "${if (expense.date == today) "Today" else expense.date}",
+                                        modifier = Modifier
+                                            .weight(0.25f)
+                                            .fillMaxHeight()
                                     )
                                     Text(
                                         text = expense.name,
-                                        modifier = Modifier.weight(1f).fillMaxHeight()
+                                        modifier = Modifier
+                                            .weight(0.45f)
+                                            .fillMaxHeight()
+                                    )
+                                    Text(
+                                        text = "₱",
+                                        modifier = Modifier
+                                            .weight(0.05f)
+                                            .fillMaxHeight(),
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Text(
+                                        text = String.format("%,.2f", expense.amount),
+                                        modifier = Modifier
+                                            .weight(0.25f)
+                                            .fillMaxHeight(),
+                                        textAlign = TextAlign.End
                                     )
                                 }
                                 HorizontalDivider()

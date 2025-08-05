@@ -33,17 +33,17 @@ class ConfirmExpenseViewModel(
 
     val mainCategories: StateFlow<List<String>> = flow {
         emit(categoryRepo.getMainCategories())
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val subCategories: StateFlow<List<String>> = _mainCategory.flatMapLatest { main ->
         flow {
             emit(categoryRepo.getSubCategories(main))
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
     val allItems: StateFlow<List<Item>> = itemRepo.getItems()
-        .stateIn(viewModelScope, SharingStarted.Companion.WhileSubscribed(5000), emptyList())
+        .stateIn(viewModelScope, SharingStarted.Companion.WhileSubscribed(), emptyList())
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val filteredOptions: StateFlow<List<Item>> = _query
@@ -53,7 +53,7 @@ class ConfirmExpenseViewModel(
             if (query.isBlank()) flowOf(emptyList())
             else itemRepo.searchFor(query)
         }
-        .stateIn(viewModelScope, SharingStarted.Companion.WhileSubscribed(5_000), emptyList())
+        .stateIn(viewModelScope, SharingStarted.Companion.WhileSubscribed(), emptyList())
 
     fun getMainCategories(onResult: (List<String>) -> Unit) {
         viewModelScope.launch {
