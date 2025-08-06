@@ -12,6 +12,7 @@ import com.budgething.ui.theme.BudgeThingTheme
 import com.budgething.ui.screen.mainscreen.mainsceen.MainScreen
 import com.budgething.ui.screen.mainscreen.pages.expense.NumKeyViewModel
 import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
+import com.budgething.ui.screen.mainscreen.pages.viewmodel.CategoryViewModel
 import com.budgething.ui.screen.mainscreen.pages.viewmodel.ExpenseViewModel
 
 class MainActivity : ComponentActivity() {
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
         val numKeyViewModel = NumKeyViewModel()
         val confirmExpenseViewModel = ConfirmExpenseViewModel(categoryRepo, itemRepo)
         val expenseViewModel = ExpenseViewModel(expenseRepo)
+        val categoryViewModel = CategoryViewModel(categoryRepo)
 
         setContent {
             BudgeThingTheme(
@@ -36,7 +38,8 @@ class MainActivity : ComponentActivity() {
                 MainScreen(
                     numKeyViewModel,
                     confirmExpenseViewModel,
-                    expenseViewModel
+                    expenseViewModel,
+                    categoryViewModel
                 )
             }
         }
