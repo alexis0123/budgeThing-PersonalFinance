@@ -63,7 +63,7 @@ fun ExpensePage(
     ) {
         Column(
             modifier = Modifier
-                .weight(1f),
+                .weight(0.35f),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.End
         ) {
@@ -75,7 +75,7 @@ fun ExpensePage(
 
         Column(
             modifier = Modifier
-                .weight(1.2f),
+                .weight(0.65f),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             HorizontalDivider(modifier = Modifier.padding(10.dp))
