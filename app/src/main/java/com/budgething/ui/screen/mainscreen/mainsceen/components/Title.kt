@@ -13,9 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.budgething.ui.screen.mainscreen.mainsceen.components.option.OptionsMenu
+import com.budgething.ui.screen.mainscreen.pages.viewmodel.CategoryViewModel
 
 @Composable
-fun Title() {
+fun Title(categoryViewModel: CategoryViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,7 +35,7 @@ fun Title() {
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            OptionsMenu()
+            OptionsMenu(categoryViewModel)
         }
     }
 }

@@ -16,15 +16,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
+import com.budgething.ui.screen.mainscreen.pages.viewmodel.CategoryViewModel
 
 @Composable
-fun OptionsMenu() {
+fun OptionsMenu(categoryViewModel: CategoryViewModel) {
     var expanded by remember { mutableStateOf(false) }
     var showEditCategory by remember { mutableStateOf(false) }
 
     EditCategory(
         showDialog = showEditCategory,
-        dismiss = { showEditCategory = false }
+        dismiss = { showEditCategory = false },
+        categoryViewModel
     )
 
     Box {
