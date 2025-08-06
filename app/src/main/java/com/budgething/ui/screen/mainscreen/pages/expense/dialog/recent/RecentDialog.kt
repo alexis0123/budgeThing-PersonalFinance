@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import com.budgething.data.local.expense.Expense
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @SuppressLint("DefaultLocale")
 @Composable
@@ -43,9 +44,12 @@ fun RecentDialog(
 
     val elevatedColor = MaterialTheme.colorScheme.surfaceColorAtElevation(200.dp)
     val today = LocalDate.now()
+    val monthDayFormatter = remember { DateTimeFormatter.ofPattern("MMM dd") }
+    val yearFormatter = remember { DateTimeFormatter.ofPattern("yyyy") }
 
     var showEditDialog by remember { mutableStateOf(false) }
     val recentExpenses by viewModel.recentExpenses.collectAsState()
+    val sortedExpense = remember(recentExpenses) { recentExpenses.sortedByDescending { it.id } }
     var selectedExpense: Expense? by remember { mutableStateOf(null) }
 
     if (showEditDialog && selectedExpense != null) {
@@ -70,7 +74,7 @@ fun RecentDialog(
                     modifier = Modifier
                         .padding(20.dp)
                 ) {
-                    items(recentExpenses.reversed()) { expense ->
+                    items(sortedExpense) { expense ->
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
@@ -78,16 +82,24 @@ fun RecentDialog(
                                 .clickable(onClick = {
                                     selectedExpense = expense
                                     showEditDialog = true
-                                }
+                                    }
                                 )
                         ) {
                             Column {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.fillMaxSize()
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
-                                        text = "${if (expense.date == today) "Today" else expense.date}",
+                                        text = if (expense.date == today) {
+                                            "Today"
+                                        } else if (expense.date.year == today.year) {
+                                            expense.date.format(monthDayFormatter)
+                                        } else {
+                                            expense.date.format(yearFormatter) +
+                                                    "\n" +
+                                                    expense.date.format(monthDayFormatter)
+                                        },
                                         modifier = Modifier
                                             .weight(0.25f)
                                             .fillMaxHeight()
