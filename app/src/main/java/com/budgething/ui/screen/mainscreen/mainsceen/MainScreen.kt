@@ -42,6 +42,7 @@ import com.budgething.ui.screen.mainscreen.pages.IncomePage
 import com.budgething.ui.screen.mainscreen.pages.ItemPage
 import com.budgething.ui.screen.mainscreen.pages.expense.NumKeyViewModel
 import com.budgething.ui.screen.mainscreen.pages.expense.dialog.ConfirmExpenseViewModel
+import com.budgething.ui.screen.mainscreen.pages.viewmodel.CategoryViewModel
 import com.budgething.ui.screen.mainscreen.pages.viewmodel.ExpenseViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -52,13 +53,15 @@ val tabPadding = 110.dp
 fun MainScreen(
     numKeyViewModel: NumKeyViewModel,
     confirmExpenseViewModel: ConfirmExpenseViewModel,
-    expenseViewModel: ExpenseViewModel
+    expenseViewModel: ExpenseViewModel,
+    categoryViewModel: CategoryViewModel
 ) {
     Column {
         PagerNav(
             numKeyViewModel,
             confirmExpenseViewModel,
-            expenseViewModel
+            expenseViewModel,
+            categoryViewModel
         )
     }
 }
@@ -68,13 +71,14 @@ fun MainScreen(
 fun PagerNav(
     numKeyViewModel: NumKeyViewModel,
     confirmExpenseViewModel: ConfirmExpenseViewModel,
-    expenseViewModel: ExpenseViewModel
+    expenseViewModel: ExpenseViewModel,
+    categoryViewModel: CategoryViewModel
 ) {
     val tabs = listOf("Expense", "Items", "Income")
     val pagerState = rememberPagerState(initialPage = 1, pageCount = { tabs.size })
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Title()
+        Title(categoryViewModel)
         FloatingPageTitle(tabs = tabs, pagerState = pagerState)
 
         Surface(
