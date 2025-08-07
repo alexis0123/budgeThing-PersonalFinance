@@ -1,20 +1,40 @@
 package com.budgething.data.local.expense.category
 
-class CategoryRepository(private val dao: CategoryDao) {
-    suspend fun getAll(): List<Category> = dao.getCategory()
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
-    suspend fun getMainCategoryFor(sub: String): String? {
-        val all = dao.getCategory()
-        return all.firstOrNull { it.sub.contains(sub) }?.main
+class CategoryRepository(private val dao: CategoryDao) {
+    fun getAll(): Flow<List<Category>> = dao.getCategory()
+
+    suspend fun getMainCategories(): List<String> {
+        return dao.getCategory()
+            .map { list -> list.map { it.main } }
+            .first()
     }
 
     suspend fun getSubCategories(main: String): List<String> {
-        val all = dao.getCategory()
-        return all.firstOrNull { it.main == main }?.sub ?: emptyList()
+        val normalizedMain = main.trim().lowercase()
+        return dao.getCategory()
+            .map { list ->
+                list.firstOrNull {
+                    it.main.trim().lowercase() == normalizedMain
+                }?.sub ?: emptyList()
+            }
+            .first()
     }
 
-    suspend fun getMainCategories(): List<String> {
-        return dao.getCategory().map { it.main }
+    suspend fun getMainCategoryFor(sub: String): String? {
+        val normalizedSub = sub.trim().lowercase()
+        return dao.getCategory()
+            .map { list ->
+                list.firstOrNull { category ->
+                    category.sub.any {
+                        it.trim().lowercase() == normalizedSub
+                    }
+                }?.main
+            }
+            .first()
     }
 
     suspend fun editCategory(category: Category) {

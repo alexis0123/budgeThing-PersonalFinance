@@ -4,24 +4,40 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.budgething.data.local.expense.category.Category
 import com.budgething.data.local.expense.category.CategoryRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.Locale
 
 class CategoryViewModel(
     private val repo: CategoryRepository
-): ViewModel() {
+) : ViewModel() {
 
-    private val _categories = MutableStateFlow<List<Category>>(emptyList())
+    private val _categories: StateFlow<List<Category>> = repo.getAll()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
     val category: StateFlow<List<Category>> = _categories
 
-    init { getCategories() }
+    suspend fun getMainCategoryFor(sub: String): String? {
+        val normalized = sub.trim().lowercase(Locale.US)
+        return _categories.value
+            .firstOrNull { category ->
+                category.sub.any { it.trim().lowercase(Locale.US) == normalized }
+            }?.main
+    }
 
-    fun getCategories() {
-        viewModelScope.launch {
-            _categories.value = repo.getAll()
-        }
+    suspend fun getSubCategoriesFor(main: String): List<String> {
+        val normalizedMain = main.trim().lowercase(Locale.US)
+        return _categories.value
+            .firstOrNull { it.main.trim().lowercase(Locale.US) == normalizedMain }
+            ?.sub
+            ?: emptyList()
+    }
+
+    fun getMainCategories(): List<String> {
+        return _categories.value.map { it.main }
     }
 
     fun editCategory(category: Category) {
@@ -29,5 +45,4 @@ class CategoryViewModel(
             repo.editCategory(category)
         }
     }
-
 }
