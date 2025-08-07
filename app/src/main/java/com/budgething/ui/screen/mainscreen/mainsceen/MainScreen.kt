@@ -52,7 +52,7 @@ fun PagerNav(
     categoryViewModel: CategoryViewModel
 ) {
     val tabs = listOf("Expense", "Items", "Income")
-    val pagerState = rememberPagerState(initialPage = 1, pageCount = { tabs.size })
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { tabs.size })
 
     Box(modifier = Modifier.fillMaxSize()) {
         Title(categoryViewModel)
